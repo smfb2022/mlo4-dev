@@ -33,5 +33,4 @@ async def bokeh(file: UploadFile = File(...), query: str = ''):
 
 @app.get("/", tags=["Health Check"])
 async def root():
-    print('xxx')
     return {"message": "Ok"}

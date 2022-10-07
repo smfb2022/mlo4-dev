@@ -12,9 +12,9 @@ app = FastAPI(title='Two Face')
 async def root():
     response_items = {}
     
-    response = requests.get('http://week-4_face_bokeh_1:8000')
+    response = requests.get('http://face-bokeh-cntnr:8000')
     response_items["face_bokeh"] = response.json()
-    response = requests.get('http://week-4_face_emotion_1:8000')
+    response = requests.get('http://face-emotion-cntnr:8000')
     response_items["face_emotion"] = response.json()
     line_format = '%s : %s'
     response_string = "\n".join([line_format % (key, str(value)) for key, value in response_items.items()])
