@@ -12,7 +12,7 @@ class Sentiment():
             - face_model_path (str): path to the haar cascade opencv model
         """
         self.input_name = 'conv2d_input'
-        self.output_name = 'dense_5'
+        self.output_name = 'dense_1'
         self.model_name = 'face-emotion'
         self.model_version = '1'
         self.triton_client = tritonhttpclient.InferenceServerClient(url=triton_url, verbose=False)
