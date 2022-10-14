@@ -1,0 +1,16 @@
+name: "face-emotion"
+platform: "tensorflow_savedmodel"
+input [
+  {
+    name: "conv2d"
+    data_type: TYPE_FP32
+    dims: [-1,48,48,1]
+  }
+]
+output [
+  {
+    name: "dense_1"
+    data_type: TYPE_FP32
+    dims: [-1,7]
+  }
+]
