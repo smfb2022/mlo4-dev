@@ -6,18 +6,17 @@ import cv2
 import io
 
 # Set triton url path on port 8000
-
+triton_url = 'triton:8002'
 
 # We instantiate a deeplab model with the location of the pretrained models
 # or in this case, our triton server
 # https://github.com/tensorflow/models/tree/master/research/deeplab
-model_path = './frozen_inference_graph.pb'
-model = DeepLabModel(model_path)
+model = DeepLabModel(triton_url)
 
 # Let's generate a new FastAPI app
 # Generate a FastAPI instance called `app` with the title 'Face-Bokeh'
 # https://fastapi.tiangolo.com/
-app = FastAPI(title='Serverless Lambda FastAPI')
+app = FastAPI(title='face-emotion')
 
 
 #The face-bokeh endpoint receives post requests with the image and returns the transformed image
