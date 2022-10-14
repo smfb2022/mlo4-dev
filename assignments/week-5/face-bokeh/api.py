@@ -6,7 +6,7 @@ import cv2
 import io
 
 # Set triton url path on port 8000
-triton_url = 'triton:8002'
+triton_url = 'triton:8000'
 
 # We instantiate a deeplab model with the location of the pretrained models
 # or in this case, our triton server
