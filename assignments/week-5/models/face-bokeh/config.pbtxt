@@ -1,9 +1,9 @@
-name:"face-bokeh"
+name: "face-bokeh"
 platform: "tensorflow_graphdef"
 input [
   {
     name: "ImageTensor"
-    data_type: TYPE_INT8
+    data_type: TYPE_UINT8
     dims: [-1,513,513,3]
   }
 ]
