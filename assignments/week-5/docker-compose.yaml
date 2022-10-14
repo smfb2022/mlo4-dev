@@ -9,14 +9,14 @@ services:
     container_name: face-bokeh-cntnr
     image: face-bokeh-img
     ports: 
-          - 8001:8000
+          - 8001:8002
 
   face-emotion:
     build: ./face-emotion
     container_name: face-emotion-cntnr
     image: face-emotion-img
     ports: 
-          - 8002:8000
+          - 8003:8002
 
   main_service:
       build: .
@@ -36,9 +36,36 @@ services:
       - 8000:8000
       - 8001:8001
       - 8002:8002
+      - 8003:8003
     image: nvcr.io/nvidia/tritonserver:22.06-py3
+    network_mode: host
     command:
-        ["--rm", "--net=host", "--model-repository=s3://shobha-mur-week1/models/"]
+        ['tritonserver', '--model-repository=s3://shobha-mur-week1/models/']
 
 
-  
+# version: '3.7'
+
+# services:
+
+#   main_service:
+#     build: .
+#     container_name: two-face-cntnr
+#     image: two-face-img
+#     ports:
+#         - 8003:8000
+#     depends_on:
+#         - inference_server
+
+#   inference_server:
+#     container_name: triton
+#     env_file:
+#         .aws.env
+#     ports:
+#       - 8000:8000
+#       - 8001:8001
+#       - 8002:8002
+#       - 8003:8003
+#     image: nvcr.io/nvidia/tritonserver:22.06-py3
+#     network_mode: host
+#     command:
+#       ['tritonserver', '--model-repository=s3://shobha-mur-week1/models/']
