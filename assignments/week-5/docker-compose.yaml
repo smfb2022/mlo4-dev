@@ -40,7 +40,7 @@ services:
       - 8002:8002
     image: nvcr.io/nvidia/tritonserver:22.06-py3
     command:
-        ["--rm", "--net=host", "--model-repository=s3://triton-repository/models/""]
+        ["--rm", "--net=host", "--model-repository=s3://triton-repository/models/"]
 
 
   
