@@ -9,7 +9,7 @@ input [
 ]
 output [
   {
-    name: "dense_1"
+    name: "dense_5"
     data_type: TYPE_FP32
     dims: [-1,7]
   }
