@@ -1,0 +1,29 @@
+#Direct the main healthcheck to port 8000
+#Direct the face-bokeh to port 8001
+#Direct the face-emotion to port 8002
+version: '3.7'
+
+services:
+  face-bokeh:
+    build: ./face-bokeh
+    container_name: face-bokeh-cntnr
+    image: face-bokeh-img
+    ports: 
+          - 8001:8000
+
+  face-emotion:
+    build: ./face-emotion
+    container_name: face-emotion-cntnr
+    image: face-emotion-img
+    ports: 
+          - 8002:8000
+
+  triton:
+      build: .
+      container_name: triton
+      image: triton
+      ports:
+          - 8000:8000
+      depends_on:
+          - face-bokeh
+          - face-emotion
