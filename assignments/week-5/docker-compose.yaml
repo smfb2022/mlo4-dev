@@ -4,13 +4,27 @@
 version: '3.7'
 
 services:
+
+  face-bokeh:
+     build: ./face-bokeh
+     container_name: face-bokeh-cntnr
+     image: face-bokeh-img
+     ports: 
+           - 8003:8000
+
+  face-emotion:
+     build: ./face-emotion
+     container_name: face-emotion-cntnr
+     image: face-emotion-img
+     ports: 
+           - 8002:8000
   
   main_service:
       build: .
       container_name: two-face-cntnr
       image: two-face-img
       ports:
-          - 8003:8000
+          - 8001:8000
       depends_on:
           - inference_server
 
@@ -20,9 +34,6 @@ services:
         .aws.env
     ports:
       - 8000:8000
-      - 8001:8001
-      - 8002:8002
-      - 8003:8003
     image: nvcr.io/nvidia/tritonserver:22.06-py3
     network_mode: host
     command:
