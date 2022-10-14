@@ -18,12 +18,29 @@ services:
     ports: 
           - 8002:8000
 
-  triton:
+  main_service:
       build: .
-      container_name: triton
-      image: triton
+      container_name: two-face-cntnr
+      image: two-face-img
       ports:
           - 8000:8000
       depends_on:
           - face-bokeh
           - face-emotion
+
+  inference_server:
+    container_name: triton
+    model-repository: 
+          s3://shobha-mur-week1/models/
+    env_file:
+        .aws.env
+    ports:
+      - 8000:8000
+      - 8001:8001
+      - 8002:8002
+    image: nvcr.io/nvidia/tritonserver:22.06-py3
+    command:
+        ["--rm", "--net=host", "--model-repository=s3://triton-repository/models/""]
+
+
+  
