@@ -6,18 +6,18 @@ version: '3.7'
 services:
 
   face-bokeh:
-     build: ./face-bokeh
-     container_name: face-bokeh-cntnr
-     image: face-bokeh-img
-     ports: 
-           - 8003:8000
+    build: ./face-bokeh
+    container_name: face-bokeh-cntnr
+    image: face-bokeh-img
+    ports: 
+          - 8003:8000
 
   face-emotion:
-     build: ./face-emotion
-     container_name: face-emotion-cntnr
-     image: face-emotion-img
-     ports: 
-           - 8002:8000
+    build: ./face-emotion
+    container_name: face-emotion-cntnr
+    image: face-emotion-img
+    ports: 
+          - 8002:8000
   
   main_service:
       build: .
