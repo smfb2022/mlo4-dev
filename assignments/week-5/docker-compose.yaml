@@ -4,29 +4,15 @@
 version: '3.7'
 
 services:
-  face-bokeh:
-    build: ./face-bokeh
-    container_name: face-bokeh-cntnr
-    image: face-bokeh-img
-    ports: 
-          - 8001:8002
-
-  face-emotion:
-    build: ./face-emotion
-    container_name: face-emotion-cntnr
-    image: face-emotion-img
-    ports: 
-          - 8003:8002
-
+  
   main_service:
       build: .
       container_name: two-face-cntnr
       image: two-face-img
       ports:
-          - 8000:8000
+          - 8003:8000
       depends_on:
-          - face-bokeh
-          - face-emotion
+          - inference_server
 
   inference_server:
     container_name: triton
@@ -44,7 +30,19 @@ services:
 
 
 # version: '3.7'
+# face-bokeh:
+#     build: ./face-bokeh
+#     container_name: face-bokeh-cntnr
+#     image: face-bokeh-img
+#     ports: 
+#           - 8001:8002
 
+#   face-emotion:
+#     build: ./face-emotion
+#     container_name: face-emotion-cntnr
+#     image: face-emotion-img
+#     ports: 
+#           - 8003:8002
 # services:
 
 #   main_service:
