@@ -11,7 +11,7 @@ class Sentiment():
         Args:
             - face_model_path (str): path to the haar cascade opencv model
         """
-        self.input_name = 'conv2d_8_input'
+        self.input_name = 'conv2d_input'
         self.output_name = 'dense_5'
         self.model_name = 'face-emotion'
         self.model_version = '1'
