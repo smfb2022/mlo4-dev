@@ -4,6 +4,14 @@
 version: '3.7'
 
 services: 
+
+bitcoin-model:
+    build: ./model
+    container_name: bitcoin-model-cntr
+    image: bitcoin-model-img
+    ports: 
+          - 8003:8000
+
   bitcoin_service:
       build: .
       container_name: bitcoin-cntr

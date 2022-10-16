@@ -11,7 +11,7 @@ logging.basicConfig(
     handlers=[logging.FileHandler("run.log"), logging.StreamHandler()],
 )
 
-class BitcoinSentiment():
+class BitcoinSentiment(triton_url='triton:8000'):
     def __init__(self):
         # create logging
         self.logger = getLogger("tweet sentiment")
@@ -26,13 +26,14 @@ class BitcoinSentiment():
         # create twitter data loader
         self.dl = LoadTweets(self.config_dict, self.logger)
 
+
+
     def predict(self, num_tweets = 10):
 
         # get tweets and predict sentiments
         posts = self.dl.get_tweets(num_tweets)
         preds = self.btc_analyzer(posts)
         return pd.concat([pd.DataFrame(posts), pd.DataFrame(preds)], axis=1)
-        #print(pd.concat([pd.DataFrame(posts), pd.DataFrame(preds)], axis=1))
 
 
 
