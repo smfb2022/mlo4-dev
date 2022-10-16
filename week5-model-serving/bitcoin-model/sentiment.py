@@ -12,7 +12,7 @@ logging.basicConfig(
 )
 
 class BitcoinSentiment(triton_url='triton:8000'):
-    def __init__(self):
+    def __init__(self, triton_url):
         # create logging
         self.logger = getLogger("tweet sentiment")
         self.logger.propagate = True
