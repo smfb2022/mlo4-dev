@@ -1,4 +1,6 @@
 import io
+from fastapi import FastAPI
+import requests
 from sentiment import BitcoinSentiment
 
 # Set triton url path
