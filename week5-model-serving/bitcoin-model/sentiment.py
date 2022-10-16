@@ -11,11 +11,12 @@ logging.basicConfig(
     handlers=[logging.FileHandler("run.log"), logging.StreamHandler()],
 )
 
-class BitcoinSentiment(triton_url='triton:8000'):
-    def __init__(self, triton_url):
+class BitcoinSentiment():
+    def __init__(self, triton_url='triton:8002'):
         # create logging
         self.logger = getLogger("tweet sentiment")
         self.logger.propagate = True
+        self.triton_url = triton_url
 
         #load config
         self.config_dict = load_yaml()
