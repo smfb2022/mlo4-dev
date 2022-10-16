@@ -1,0 +1,25 @@
+#Direct the main healthcheck to port 8000
+#Direct the face-bokeh to port 8001
+#Direct the face-emotion to port 8002
+version: '3.7'
+
+services: 
+  bitcoin_service:
+      build: .
+      container_name: bitcoin-cntr
+      image: bitcoin-img
+      ports:
+          - 8001:8000
+      depends_on:
+          - inference_server
+
+  inference_server:
+    container_name: triton
+    env_file:
+        .aws.env
+    ports:
+      - 8000:8000
+    image: nvcr.io/nvidia/tritonserver:22.06-py3
+    command:
+        ['tritonserver', '--model-repository=s3://shobha-mur-week1/models-cap/']
+
