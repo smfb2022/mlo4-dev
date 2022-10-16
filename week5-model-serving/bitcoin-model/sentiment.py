@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 
 from utils.logging import getLogger
-from model.classifier import build_crypto_sentiment_analyzer
+from classifier import build_crypto_sentiment_analyzer
 from utils.io import load_yaml
 from data.load import LoadTweets
 

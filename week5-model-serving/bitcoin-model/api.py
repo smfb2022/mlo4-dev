@@ -7,9 +7,6 @@ triton_url = 'triton:8000'
 
 model = BitcoinSentiment(triton_url)
 
-# Let's generate a new FastAPI app
-# Generate a FastAPI instance called `app` with the title 'Face-Emotion'
-# https://fastapi.tiangolo.com/
 app = FastAPI(title='bitcoin-model')
 
 
