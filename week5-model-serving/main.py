@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from sentiment import BitcoinSentiment
+import requests
 
 app = FastAPI(title='Bitcoin Sentiment Analysis')
 
