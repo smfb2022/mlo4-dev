@@ -1,8 +1,3 @@
-from starlette.responses import StreamingResponse
-from fastapi import FastAPI, File, UploadFile
-from emotions import Sentiment
-import numpy as np
-import cv2
 import io
 from sentiment import BitcoinSentiment
 
