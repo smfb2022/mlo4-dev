@@ -6,4 +6,5 @@ python-dotenv
 scipy
 pyyaml
 pandas
+numpy
 torch
