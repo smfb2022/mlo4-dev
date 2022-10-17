@@ -21,7 +21,7 @@ def run_inference(model_name='bitcoin-model', url='127.0.0.1:8000', model_versio
     VERBOSE = False
     # hypothesis for topic classification
     topic = 'bitcoin is great'
-    premise = 'Bullish'
+    premise = 'Bearish'
     input_name = ['input__0', 'input__1']
     output_name = 'output__0'
 
@@ -54,6 +54,7 @@ def run_inference(model_name='bitcoin-model', url='127.0.0.1:8000', model_versio
     input1.set_data_from_numpy(mask, binary_data=False)
     output = tritonhttpclient.InferRequestedOutput(output_name,  binary_data=False)
     response = triton_client.infer(model_name,  model_version=model_version, inputs=[input0, input1], outputs=[output])
+    print(response.get_response()["id"])
     logits = response.as_numpy('output__0')
     logits = np.asarray(logits, dtype=np.float32)
 # we throw away "neutral" (dim 1) and take the probability of
