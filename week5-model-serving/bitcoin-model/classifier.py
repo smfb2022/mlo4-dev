@@ -28,6 +28,10 @@ def run_inference(model_name='bitcoin-model', url='127.0.0.1:8000', model_versio
 
     R_tokenizer = AutoTokenizer.from_pretrained('ElKulako/cryptobert')
 
+    emotion_dict = {
+            0: "Bearish",
+            1: "Neutral",
+            2: "Bullish"}
 
     VERBOSE = False
     # hypothesis for topic classification
@@ -57,12 +61,17 @@ def run_inference(model_name='bitcoin-model', url='127.0.0.1:8000', model_versio
     print(response.get_response())
     logits = response.as_numpy('output__0')
     logits = np.asarray(logits, dtype=np.float32)
-# we throw away "neutral" (dim 1) and take the probability of
+    # we throw away "neutral" (dim 1) and take the probability of
     # "entailment" (2) as the probability of the label being true 
-    entail_contradiction_logits = logits[:,[0,2]]
-    probs = softmax(entail_contradiction_logits)
-    true_prob = probs[:,1].item() * 100
-    print('Probability that the label is true: ' + str(true_prob))
+    # entail_contradiction_logits = logits[:,[0,2]]
+    # probs = softmax(entail_contradiction_logits)
+    # true_prob = probs[:,1].item() * 100
+
+    maxindex = int(np.argmax(logits))
+    emotion = emotion_dict[maxindex]
+
+
+    print('Probability that the label is true: ' + emotion)
 
     
 
