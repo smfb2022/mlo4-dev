@@ -12,8 +12,6 @@ def build_crypto_sentiment_analyzer(model_name):
     model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels = 3)
     pipe = TextClassificationPipeline(model=model, tokenizer=tokenizer)
 
-    run_inference()
-
     return pipe
 
 
@@ -38,10 +36,10 @@ def run_inference(model_name='bitcoin-model', url='127.0.0.1:8000', model_versio
     output_name = 'output__0'
     triton_client = tritonhttpclient.InferenceServerClient(
         url=url, verbose=VERBOSE)
-    model_metadata = triton_client.get_model_metadata(
-        model_name=model_name, model_version=model_version)
-    model_config = triton_client.get_model_config(
-        model_name=model_name, model_version=model_version)
+    # model_metadata = triton_client.get_model_metadata(
+    #     model_name=model_name, model_version=model_version)
+    # model_config = triton_client.get_model_config(
+    #     model_name=model_name, model_version=model_version)
     # I have restricted the input sequence length to 256
     input_ids = R_tokenizer.encode(premise, topic, max_length=256, truncation=True, padding='max_length')
     input_ids = np.array(input_ids, dtype=np.int32)
