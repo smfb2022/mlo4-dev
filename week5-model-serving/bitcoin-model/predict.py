@@ -1,24 +1,30 @@
 import numpy as np
-from functools import partial
 import tritonhttpclient
 
 from transformers import TextClassificationPipeline, AutoTokenizer
 from scipy.special import softmax
 
-R_tokenizer = AutoTokenizer.from_pretrained('ElKulako/cryptobert')
 
-# model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels = 3)
- #   pipe = TextClassificationPipeline(model=model, tokenizer=tokenizer)
-
-
-VERBOSE = False
-# hypothesis for topic classification
-topic = 'bitcoin is great'
-input_name = ['input__0', 'input__1']
-output_name = 'output__0'
 
 
 def run_inference(premise, model_name='bitcoin-model', url='127.0.0.1:8000', model_version='1'):
+
+    VERBOSE = False
+    # hypothesis for topic classification
+    topic = 'bitcoin is great'
+    premise = 'Bullish'
+    input_name = ['input__0', 'input__1']
+    output_name = 'output__0'
+
+
+    R_tokenizer = AutoTokenizer.from_pretrained('ElKulako/cryptobert')
+
+
+    VERBOSE = False
+    # hypothesis for topic classification
+    topic = 'bitcoin is great'
+    input_name = ['input__0', 'input__1']
+    output_name = 'output__0'
     triton_client = tritonhttpclient.InferenceServerClient(
         url=url, verbose=VERBOSE)
     model_metadata = triton_client.get_model_metadata(
@@ -48,8 +54,3 @@ def run_inference(premise, model_name='bitcoin-model', url='127.0.0.1:8000', mod
     true_prob = probs[:,1].item() * 100
     print('Probability that the label is true: ' + true_prob)
 
-
-
-# topic classification premises
-if __name__ == '__main__':
-    run_inference('Bitcoin is great')
