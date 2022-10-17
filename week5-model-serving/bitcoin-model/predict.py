@@ -52,5 +52,5 @@ def run_inference(premise, model_name='bitcoin-model', url='127.0.0.1:8000', mod
     entail_contradiction_logits = logits[:,[0,2]]
     probs = softmax(entail_contradiction_logits)
     true_prob = probs[:,1].item() * 100
-    print('Probability that the label is true: ' + true_prob)
+    print('Probability that the label is true: ' + str(true_prob))
 
