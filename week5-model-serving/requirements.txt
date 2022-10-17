@@ -8,3 +8,4 @@ pyyaml
 pandas
 numpy
 torch
+tritonclient[http]
