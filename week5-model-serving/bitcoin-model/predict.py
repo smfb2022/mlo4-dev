@@ -52,4 +52,4 @@ def run_inference(premise, model_name='bitcoin-model', url='127.0.0.1:8000', mod
 
 # topic classification premises
 if __name__ == '__main__':
-    run_inference('Jupiter’s Biggest Moons Started as Tiny Grains of Hail')
+    run_inference('Bitcoin is great')
