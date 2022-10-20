@@ -32,10 +32,9 @@ class BitcoinSentiment():
 
     def predict(self, num_tweets = 10):
 
-        run_inference(model_name='bitcoin-model', url=self.triton_url, model_version='1')
-
         # get tweets and predict sentiments
         posts = self.dl.get_tweets(num_tweets)
+        run_inference(posts[0], model_name='bitcoin-model', url=self.triton_url, model_version='1')
         preds = self.btc_analyzer(posts)
         return pd.concat([pd.DataFrame(posts), pd.DataFrame(preds)], axis=1)
 

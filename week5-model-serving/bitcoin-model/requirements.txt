@@ -9,3 +9,5 @@ pandas
 torch
 numpy
 tritonclient[http]
+sse_starlette
+jinja2
