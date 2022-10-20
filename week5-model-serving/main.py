@@ -7,7 +7,7 @@ app = FastAPI(title='Bitcoin Sentiment Analysis')
 @app.get("/", tags=["Health Check"])
 async def root():   
     response = requests.get('http://bitcoin-model-cntr:8000')
-    return response
+    return response.json()
 
 
 
