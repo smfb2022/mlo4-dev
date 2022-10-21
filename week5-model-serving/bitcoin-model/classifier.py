@@ -26,8 +26,10 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
             1: "Neutral",
             2: "Bullish"}
 
-    R_tokenizer = AutoTokenizer.from_pretrained('ElKulako/cryptobert', padding_side='left')
 
+    print(f"Input string is  {tweetstr}.")
+ 
+    R_tokenizer = AutoTokenizer.from_pretrained('ElKulako/cryptobert', use_fast=True)
 
     VERBOSE = False
     triton_client = tritonhttpclient.InferenceServerClient(
@@ -37,7 +39,14 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
     model_config = triton_client.get_model_config(
         model_name=model_name, model_version=model_version)
     # I have restricted the input sequence length to 256
-    input_ids = R_tokenizer.encode(tweetstr, max_length=256, truncation=True, padding='max_length')
+    input_ids  = R_tokenizer.batch_encode_plus([tweetstr],
+                                    return_tensors='pt', max_length=256,
+                                    truncation=True, padding='max_length'
+                                    )
+                            
+
+    #input_ids = R_tokenizer.encode(tweetstr, return_tensors='pt', max_length=256, truncation=True, padding='max_length')
+    print(f'tokens {input_ids}')
     input_ids = np.array(input_ids, dtype=np.int32)
     input_ids = input_ids.reshape(1, 256)
 
@@ -49,14 +58,10 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
     logits = response.as_numpy('output__0')
     logits = np.asarray(logits, dtype=np.float32)
 
-
-    print(logits.shape)
-    print(logits)
+    print(f'logits values {logits}')
     probs = softmax(logits)
-    print(probs)
-
+    print(f'softmax values {probs}')
     maxindex = int(np.argmax(logits))
     emotion = emotion_dict[maxindex]
-
-    print(emotion)
+    print(f'predicted emotion {emotion}')
 

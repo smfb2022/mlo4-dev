@@ -34,6 +34,7 @@ class BitcoinSentiment():
 
         # get tweets and predict sentiments
         posts = self.dl.get_tweets(num_tweets)
+        posts[0]="Bitcoin #BTC is going Up.  it is great"
         run_inference(posts[0], model_name='bitcoin-model', url=self.triton_url, model_version='1')
         preds = self.btc_analyzer(posts)
         return pd.concat([pd.DataFrame(posts), pd.DataFrame(preds)], axis=1)
