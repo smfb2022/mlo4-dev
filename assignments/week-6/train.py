@@ -16,8 +16,6 @@ img_size = (160, 160)
 num_classes = 3
 batch_size = 32
 
-mlflow.log_param("batch_size", batch_size)
-mlflow.log_prams("num_classes", num_classes)
 
 input_img_paths = sorted(
     [os.path.join(input_dir, fname) for fname in os.listdir(input_dir) if fname.endswith(".jpg")])
