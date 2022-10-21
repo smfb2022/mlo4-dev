@@ -18,7 +18,7 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
     VERBOSE = False
     # hypothesis for topic classification
     topic = 'How early did you get into #Bitcoin and #ETH?'
-    input_name = ['input__0']
+    input_name = ['input__0', 'input__1']
     output_name = 'output__0'
 
     emotion_dict = {
@@ -36,25 +36,27 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
         url=url, verbose=VERBOSE)
     model_metadata = triton_client.get_model_metadata(
         model_name=model_name, model_version=model_version)
+    print(f"model metadata {model_metadata}")
     model_config = triton_client.get_model_config(
         model_name=model_name, model_version=model_version)
+    print(f"model_config {model_config}")
     # I have restricted the input sequence length to 256
     input_ids  = R_tokenizer.batch_encode_plus([tweetstr],
                                     return_tensors='pt', max_length=256,
                                     truncation=True, padding='max_length'
                                     )
-                            
-
-    #input_ids = R_tokenizer.encode(tweetstr, return_tensors='pt', max_length=256, truncation=True, padding='max_length')
-    print(f'tokens {input_ids}')
     input_ids = np.array(input_ids['input_ids'], dtype=np.int32)
     input_ids = input_ids.reshape(1, 256)
-
     input0 = tritonhttpclient.InferInput(input_name[0], (1,  256), 'INT32')
     input0.set_data_from_numpy(input_ids, binary_data=False)
 
+    attn_ids = np.array(input_ids['attention_mask'], dtype=np.int32)
+    attn_ids = attn_ids.reshape(1, 256)
+    input1 = tritonhttpclient.InferInput(input_name[1], (1,  256), 'INT32')
+    input1.set_data_from_numpy(attn_ids, binary_data=False)
+
     output = tritonhttpclient.InferRequestedOutput(output_name,  binary_data=False)
-    response = triton_client.infer(model_name,  model_version=model_version, inputs=[input0], outputs=[output])
+    response = triton_client.infer(model_name, model_version=model_version, inputs=[input0, input1], outputs=[output])
     logits = response.as_numpy('output__0')
     logits = np.asarray(logits, dtype=np.float32)
 
