@@ -53,14 +53,14 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
     input0 = tritonhttpclient.InferInput(input_name[0], ( 1, 256), 'INT32')
     input0.set_data_from_numpy(input_ids, binary_data=False)
 
-    # print(tokens['attention_mask'])
-    # attn_ids = np.array(tokens['attention_mask'], dtype=np.int32)
-    # attn_ids = attn_ids.reshape(1, 256)
-    # input1 = tritonhttpclient.InferInput(input_name[1], (1,  256), 'INT32')
-    # input1.set_data_from_numpy(attn_ids, binary_data=False)
+    print(tokens['attention_mask'])
+    attn_ids = np.array(tokens['attention_mask'], dtype=np.int32)
+    attn_ids = attn_ids.reshape(1, 256)
+    input1 = tritonhttpclient.InferInput(input_name[1], (1,  256), 'INT32')
+    input1.set_data_from_numpy(attn_ids, binary_data=False)
 
     output = tritonhttpclient.InferRequestedOutput(output_name,  binary_data=False)
-    response = triton_client.infer(model_name, model_version=model_version, inputs=[input0], outputs=[output])
+    response = triton_client.infer(model_name, model_version=model_version, inputs=[input0, input1], outputs=[output])
     logits = response.as_numpy('output__0')
     logits = np.asarray(logits, dtype=np.float32)
 
