@@ -58,7 +58,7 @@ model_checkpoint = keras.callbacks.ModelCheckpoint(
 
 # Train the model, doing validation at the end of each epoch.
 # Make sure to include the calllback for mlflow
-epochs = 15
+epochs = 2
 mlflow.keras.autolog()
 model.fit(train_gen, epochs=epochs, validation_data=val_gen, callbacks=[model_checkpoint])
 model.save('./segmentation/')
