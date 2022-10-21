@@ -10,8 +10,8 @@ import mlflow.keras
 # Add mlflow logging
 
 
-input_dir = 'data'
-target_dir = 'target'
+input_dir = 'data/images'
+target_dir = 'target/trimaps'
 img_size = (160, 160)
 num_classes = 3
 batch_size = 32
