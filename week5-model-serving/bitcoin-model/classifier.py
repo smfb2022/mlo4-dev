@@ -49,7 +49,7 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
 
     print(tokens['input_ids'])
     input_ids = np.array(tokens['input_ids'], dtype=np.int32)
-    input_ids = input_ids.reshape(, 1, 256)
+    input_ids = input_ids.reshape(1, 256)
     input0 = tritonhttpclient.InferInput(input_name[0], ( 1, 256), 'INT32')
     input0.set_data_from_numpy(input_ids, binary_data=False)
 
