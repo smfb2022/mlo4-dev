@@ -45,6 +45,8 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
                                     return_tensors='pt', max_length=256,
                                     truncation=True, padding='max_length'
                                     )
+    print(f'token type {type(tokens)}')
+
     input_ids = np.array(tokens['input_ids'], dtype=np.int32)
     input_ids = input_ids.reshape(1, 256)
     input0 = tritonhttpclient.InferInput(input_name[0], (1,  256), 'INT32')
