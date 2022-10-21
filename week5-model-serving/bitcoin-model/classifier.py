@@ -41,16 +41,16 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
         model_name=model_name, model_version=model_version)
     print(f"model_config {model_config}")
     # I have restricted the input sequence length to 256
-    input_ids  = R_tokenizer.batch_encode_plus([tweetstr],
+    tokens  = R_tokenizer.batch_encode_plus([tweetstr],
                                     return_tensors='pt', max_length=256,
                                     truncation=True, padding='max_length'
                                     )
-    input_ids = np.array(input_ids['input_ids'], dtype=np.int32)
+    input_ids = np.array(tokens['input_ids'], dtype=np.int32)
     input_ids = input_ids.reshape(1, 256)
     input0 = tritonhttpclient.InferInput(input_name[0], (1,  256), 'INT32')
     input0.set_data_from_numpy(input_ids, binary_data=False)
 
-    attn_ids = np.array(input_ids['attention_mask'], dtype=np.int32)
+    attn_ids = np.array(tokens['attention_mask'], dtype=np.int32)
     attn_ids = attn_ids.reshape(1, 256)
     input1 = tritonhttpclient.InferInput(input_name[1], (1,  256), 'INT32')
     input1.set_data_from_numpy(attn_ids, binary_data=False)
