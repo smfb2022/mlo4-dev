@@ -24,13 +24,10 @@ async def sentiment_generator(request):
         if await request.is_disconnected():
             break
         tweets_with_sentiments = requests.post('http://bitcoin-model-cntr:8000/bitcoin-sentiment') #model.predict()
-        print(tweets_with_sentiments)
-        print(tweets_with_sentiments)
-        print(tweets_with_sentiments)
-        print(tweets_with_sentiments)
-        print(tweets_with_sentiments)
-        print(tweets_with_sentiments)
-        print(tweets_with_sentiments)
+        print(tweets_with_sentiments.status_code)
+        print(tweets_with_sentiments.json())
+        print(tweets_with_sentiments.status_code)
+        print(tweets_with_sentiments.json())
         datadf = {'tweets':  ['aaaa', 'bbbb', 'cccc'],
         'sentiment': ['Bullish', 'Bearish', 'Neutral'],
         'score': ['0.111', '0.2222', '0.33333'],
