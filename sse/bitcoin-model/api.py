@@ -12,8 +12,6 @@ app = FastAPI(title='bitcoin-model')
 @app.post("/bitcoin-sentiment", tags=["Analysis"])
 async def sentiment(num_tweets: int = 10):
 
-     print('sentiment')
-
      #We run the model to get the tweets and analyze them
      tweets_with_sentiments = model.predict(num_tweets=num_tweets)
     
