@@ -25,12 +25,13 @@ async def sentiment_generator(request):
         tweets_with_sentiments = requests.post('http://bitcoin-model-cntr:8000/bitcoin-sentiment') #model.predict()
         print(tweets_with_sentiments.status_code)
         print(tweets_with_sentiments.json())
-        print(pandas.DataFrame.from_dict(tweets_with_sentiments.json()))  
-        datadf = {'tweets':  ['aaaa', 'bbbb', 'cccc'],
-        'sentiment': ['Bullish', 'Bearish', 'Neutral'],
-        'score': ['0.111', '0.2222', '0.33333'],
-        }
-        df = pandas.DataFrame(datadf)
+        print(pandas.DataFrame.from_dict(tweets_with_sentiments.json())) 
+        df = pandas.DataFrame(pandas.DataFrame.from_dict(tweets_with_sentiments.json()))
+        # datadf = {'tweets':  ['aaaa', 'bbbb', 'cccc'],
+        # 'sentiment': ['Bullish', 'Bearish', 'Neutral'],
+        # 'score': ['0.111', '0.2222', '0.33333'],
+        # }
+        # df = pandas.DataFrame(datadf)
         table = df.to_html(index=False, justify="center", classes='styled-table', table_id="sentiment")
         yield {
             "event": "sentiment_data",
