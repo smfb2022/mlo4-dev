@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import pandas
 import io
 import asyncio
 from pathlib import Path
@@ -24,7 +25,18 @@ async def sentiment_generator(request):
             break
         tweets_with_sentiments = requests.post('http://bitcoin-model-cntr:8000/bitcoin-sentiment') #model.predict()
         print(tweets_with_sentiments)
-        table = tweets_with_sentiments.to_html(index=False, justify="center", classes='styled-table', table_id="sentiment")
+        print(tweets_with_sentiments)
+        print(tweets_with_sentiments)
+        print(tweets_with_sentiments)
+        print(tweets_with_sentiments)
+        print(tweets_with_sentiments)
+        print(tweets_with_sentiments)
+        datadf = {'tweets':  ['aaaa', 'bbbb', 'cccc'],
+        'sentiment': ['Bullish', 'Bearish', 'Neutral'],
+        'score': ['0.111', '0.2222', '0.33333'],
+        }
+        df = pandas.DataFrame(datadf)
+        table = df.to_html(index=False, justify="center", classes='styled-table', table_id="sentiment")
         yield {
             "event": "sentiment_data",
             "retry": 5000,  # miliseconds
