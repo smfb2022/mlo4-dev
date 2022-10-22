@@ -1,6 +1,0 @@
-base_folder: '.'
-twitter_api: 'v2'
-v1_search_words: '#bitcoin -filter:retweets'
-v2_query:  'bitcoin #BTC -is:retweet'
-env_config_path: '.'
-model_name: 'ElKulako/cryptobert'
