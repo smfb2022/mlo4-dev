@@ -22,7 +22,8 @@ async def sentiment_generator(request):
     while True:
         if await request.is_disconnected():
             break
-        tweets_with_sentiments = response = requests.post('http://bitcoin-model-cntr:8000/bitcoin-sentiment') #model.predict()
+        tweets_with_sentiments = requests.post('http://bitcoin-model-cntr:8000/bitcoin-sentiment') #model.predict()
+        print(tweets_with_sentiments)
         table = tweets_with_sentiments.to_html(index=False, justify="center", classes='styled-table', table_id="sentiment")
         yield {
             "event": "sentiment_data",
@@ -38,6 +39,7 @@ templates = Jinja2Templates(directory=str(Path(BASE_DIR, 'templates')))
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     response = requests.get('http://bitcoin-model-cntr:8000')
+    print(response)
     context = {"request": request}
     return templates.TemplateResponse("index.html", context)
 
