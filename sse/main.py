@@ -9,8 +9,6 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sse_starlette.sse import EventSourceResponse
 import requests
-from pandas.io.json import json_normalize
-
 app = FastAPI(title='Bitcoin Sentiment Analysis')
 
 # #Call your get function for a health Check
@@ -27,8 +25,7 @@ async def sentiment_generator(request):
         tweets_with_sentiments = requests.post('http://bitcoin-model-cntr:8000/bitcoin-sentiment') #model.predict()
         print(tweets_with_sentiments.status_code)
         print(tweets_with_sentiments.json())
-        df = json_normalize(tweets_with_sentiments.json())
-        print(df.head())    
+        print(pandas.DataFrame.from_dict(tweets_with_sentiments.json()))  
         datadf = {'tweets':  ['aaaa', 'bbbb', 'cccc'],
         'sentiment': ['Bullish', 'Bearish', 'Neutral'],
         'score': ['0.111', '0.2222', '0.33333'],
