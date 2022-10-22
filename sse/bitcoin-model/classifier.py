@@ -34,10 +34,10 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
         url=url, verbose=VERBOSE)
     model_metadata = triton_client.get_model_metadata(
         model_name=model_name, model_version=model_version)
-    print(f"model metadata {model_metadata}")
+    #print(f"model metadata {model_metadata}")
     model_config = triton_client.get_model_config(
         model_name=model_name, model_version=model_version)
-    print(f"model_config {model_config}")
+    #print(f"model_config {model_config}")
     # I have restricted the input sequence length to 256
     tokens  = R_tokenizer.batch_encode_plus([tweetstr],
                                     return_tensors='pt', max_length=256,
@@ -62,10 +62,10 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
     logits = response.as_numpy('output__0')
     logits = np.asarray(logits, dtype=np.float32)
 
-    #print(f'logits values {logits}')
+    print(f'logits values {logits}')
     probs = softmax(logits)
-    #print(f'softmax values {probs}')
+    print(f'softmax values {probs}')
     maxindex = int(np.argmax(probs))
     emotion = emotion_dict[maxindex]
-    print(f'predicted emotion is {emotion} with score {probs[maxindex]} for tweet {tweetstr}.')
+    print(f'predicted emotion is {emotion}  for tweet {tweetstr}.')
 
