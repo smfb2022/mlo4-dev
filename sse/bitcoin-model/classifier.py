@@ -8,6 +8,7 @@ def build_crypto_sentiment_analyzer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels = 3)
     pipe = TextClassificationPipeline(model=model, tokenizer=tokenizer)
+    print('xxxxxx')
 
     return pipe
 
@@ -62,10 +63,10 @@ def run_inference(tweetstr, model_name='bitcoin-model', url='127.0.0.1:8000', mo
     logits = response.as_numpy('output__0')
     logits = np.asarray(logits, dtype=np.float32)
 
-    print(f'logits values {logits}')
+    #print(f'logits values {logits}')
     probs = softmax(logits)
-    print(f'softmax values {probs}')
+    #print(f'softmax values {probs}')
     maxindex = int(np.argmax(probs))
     emotion = emotion_dict[maxindex]
-    print(f'predicted emotion is {emotion}  for tweet {tweetstr}.')
+    print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
 
