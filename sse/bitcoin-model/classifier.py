@@ -70,7 +70,7 @@ class TritonBitcoinSentiment():
         logitsa = np.asarray(logits, dtype=np.float32)
 
         df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
-        for i in range (0:no_tweets):
+        for i in range (no_tweets):
             logits = logitsa[i]
             #print(f'logits values {logits}')
             probs = softmax(logits)
