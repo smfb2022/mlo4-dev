@@ -40,7 +40,7 @@ class TritonBitcoinSentiment():
 
     def run_inference(self, tweets):
         #df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
-        sentiment_list = [{'Tweets','Sentiment','Score'}]
+        sentiment_list = []
         for i in range(len(tweets)):
             tweetstr = tweets[i]
             #print(f"Input string is  {tweetstr}.")
@@ -76,9 +76,9 @@ class TritonBitcoinSentiment():
             maxindex = int(np.argmax(probs))
             emotion = emotion_dict[maxindex]
             #print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
-            sentiment_list.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[maxindex]})
+            sentiment_list.append([tweetstr,  emotion,  probs[maxindex]])
             #df = df.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[maxindex]}, ignore_index=True)
-        df = pandas.DataFrame.from_dict(sentiment_list)
+        df = pandas.DataFrame(sentiment_list, columns = ['Tweets','Sentiment','Score'])
         #print(df)
         return df
 
