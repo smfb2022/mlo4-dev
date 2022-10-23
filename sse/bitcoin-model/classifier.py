@@ -40,8 +40,7 @@ class TritonBitcoinSentiment():
 
     def run_inference(self, tweets):
 
-        no_tweets = 1
-
+        no_tweets = 2
         tweetstr = tweets[0:no_tweets]
         #print(f"Input string is  {tweetstr}.")
     
