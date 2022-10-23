@@ -1,5 +1,6 @@
 from transformers import TextClassificationPipeline, AutoModelForSequenceClassification, AutoTokenizer
 import numpy as np
+import pandas
 import tritonhttpclient
 from scipy.special import softmax
 
@@ -37,7 +38,11 @@ class TritonBitcoinSentiment():
         #     model_name=model_name, model_version=model_version)
         # #print(f"model_config {model_config}")
 
-    def run_inference(self, tweetstr):
+    def run_inference(self, tweets):
+
+        no_tweets = 1
+
+        tweetstr = tweets[0:no_tweets]
         #print(f"Input string is  {tweetstr}.")
     
         # I have restricted the input sequence length to 256
@@ -49,27 +54,33 @@ class TritonBitcoinSentiment():
 
         #print(tokens['input_ids'])
         input_ids = np.array(tokens['input_ids'], dtype=np.int32)
-        input_ids = input_ids.reshape(1, 256)
-        input0 = tritonhttpclient.InferInput(self.input_name[0], ( 1, 256), 'INT32')
+        input_ids = input_ids.reshape(no_tweets, 256)
+        input0 = tritonhttpclient.InferInput(self.input_name[0], ( no_tweets, 256), 'INT32')
         input0.set_data_from_numpy(input_ids, binary_data=False)
 
         #print(tokens['attention_mask'])
         attn_ids = np.array(tokens['attention_mask'], dtype=np.int32)
         attn_ids = attn_ids.reshape(1, 256)
-        input1 = tritonhttpclient.InferInput(self.input_name[1], (1,  256), 'INT32')
+        input1 = tritonhttpclient.InferInput(self.input_name[1], (no_tweets,  256), 'INT32')
         input1.set_data_from_numpy(attn_ids, binary_data=False)
 
         output = tritonhttpclient.InferRequestedOutput(self.output_name,  binary_data=False)
         response = self.triton_client.infer(self.model_name, model_version=self.model_version, inputs=[input0, input1], outputs=[output])
         logits = response.as_numpy('output__0')
-        logits = np.asarray(logits, dtype=np.float32)
+        logitsa = np.asarray(logits, dtype=np.float32)
 
-        #print(f'logits values {logits}')
-        probs = softmax(logits)
-        #print(f'softmax values {probs}')
-        maxindex = int(np.argmax(probs))
-        emotion = emotion_dict[maxindex]
-        print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
+        df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
+        for i in range (0:no_tweets):
+            logits = logitsa[i]
+            #print(f'logits values {logits}')
+            probs = softmax(logits)
+            #print(f'softmax values {probs}')
+            maxindex = int(np.argmax(probs))
+            emotion = emotion_dict[maxindex]
+            #print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
+            df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
+            df = df.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[:,maxindex]}, ignore_index=True)
+        print(df)
 
 
 

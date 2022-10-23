@@ -38,8 +38,7 @@ class BitcoinSentiment():
         # get tweets and predict sentiments
         posts = self.dl.get_tweets(num_tweets)
         
-        self.tis.run_inference(posts[0])
-        self.tis.run_inference(posts[1])
+        self.tis.run_inference(posts)
 
         preds = self.btc_analyzer(posts)
         df = pd.DataFrame(preds)
