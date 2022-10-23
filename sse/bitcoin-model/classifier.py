@@ -42,7 +42,7 @@ class TritonBitcoinSentiment():
 
         no_tweets = 1
 
-        tweetstr = tweets[0]
+        tweetstr = tweets[0:no_tweets]
         #print(f"Input string is  {tweetstr}.")
     
         # I have restricted the input sequence length to 256
