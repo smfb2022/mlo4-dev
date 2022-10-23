@@ -74,12 +74,12 @@ class TritonBitcoinSentiment():
             logits = logitsa[i]
             #print(f'logits values {logits}')
             probs = softmax(logits)
-            #print(f'softmax values {probs}')
+            print(f'softmax values {probs}')
             maxindex = int(np.argmax(probs))
             emotion = emotion_dict[maxindex]
             #print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
             df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
-            df = df.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[:,maxindex]}, ignore_index=True)
+            df = df.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[maxindex]}, ignore_index=True)
         print(df)
 
 
