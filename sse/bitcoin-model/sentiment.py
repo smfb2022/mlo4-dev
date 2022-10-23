@@ -39,11 +39,12 @@ class BitcoinSentiment():
         posts = self.dl.get_tweets(num_tweets)
         
         df = self.tis.run_inference(posts)
-        return df
+        print(df)
 
         preds = self.btc_analyzer(posts)
         df = pd.DataFrame(preds)
         df.insert(0, "tweets", posts, True)
+        print(df)
         return df
 
 
