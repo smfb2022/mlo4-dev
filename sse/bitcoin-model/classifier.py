@@ -78,7 +78,7 @@ class TritonBitcoinSentiment():
             #print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
             sentiment_list.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[maxindex]})
             #df = df.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[maxindex]}, ignore_index=True)
-        df = pd.DataFrame.from_dict(sentiment_list)
+        df = pandas.DataFrame.from_dict(sentiment_list)
         #print(df)
         return df
 
