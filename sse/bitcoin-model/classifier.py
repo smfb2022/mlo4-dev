@@ -69,7 +69,6 @@ class TritonBitcoinSentiment():
             logits = response.as_numpy('output__0')
             logitsa = np.asarray(logits, dtype=np.float32)
 
-            df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
             logits = logitsa[0]
             #print(f'logits values {logits}')
             probs = softmax(logits)
