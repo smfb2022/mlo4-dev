@@ -18,7 +18,7 @@ emotion_dict = {
 
 class TritonBitcoinSentiment():
 
-    def __init__(self, model_name='bitcoin-model', url='127.0.0.1:8000', model_version='1'):
+    def __init__(self, url='127.0.0.1:8000', model_name='bitcoin-model',  model_version='1'):
         self.input_name = ['input__0', 'input__1']
         self.output_name = 'output__0'
         self.model_name = model_name
@@ -37,7 +37,7 @@ class TritonBitcoinSentiment():
         #     model_name=model_name, model_version=model_version)
         # #print(f"model_config {model_config}")
 
-    def run_inference(tweetstr):
+    def run_inference(self, tweetstr):
         #print(f"Input string is  {tweetstr}.")
     
         # I have restricted the input sequence length to 256
@@ -68,7 +68,7 @@ class TritonBitcoinSentiment():
         probs = softmax(logits)
         #print(f'softmax values {probs}')
         maxindex = int(np.argmax(probs))
-        emotion = self.emotion_dict[maxindex]
+        emotion = emotion_dict[maxindex]
         print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
 
 

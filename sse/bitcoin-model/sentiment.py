@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 
 from utils.logging import getLogger
-from classifier import build_crypto_sentiment_analyzer, run_inference
+from classifier import build_crypto_sentiment_analyzer, TritonBitcoinSentiment
 from utils.io import load_yaml
 from data.load import LoadTweets
 
@@ -28,6 +28,9 @@ class BitcoinSentiment():
         # create twitter data loader
         self.dl = LoadTweets(self.config_dict, self.logger)
 
+        # triton inference server
+        self.tis = TritonBitcoinSentiment(triton_url)
+
 
 
     def predict(self, num_tweets = 10):
@@ -35,8 +38,8 @@ class BitcoinSentiment():
         # get tweets and predict sentiments
         posts = self.dl.get_tweets(num_tweets)
         
-        run_inference(posts[0], model_name='bitcoin-model', url=self.triton_url, model_version='1')
-        run_inference(posts[1], model_name='bitcoin-model', url=self.triton_url, model_version='1')
+        self.tis.run_inference(posts[0])
+        self.tis.run_inference(posts[1])
 
         preds = self.btc_analyzer(posts)
         df = pd.DataFrame(preds)
