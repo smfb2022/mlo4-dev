@@ -39,37 +39,39 @@ class TritonBitcoinSentiment():
         # #print(f"model_config {model_config}")
 
     def run_inference(self, tweets):
-        #df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
+
         sentiment_list = []
-        for i in range(len(tweets)):
-            tweetstr = tweets[i]
+
+        tweetstr = list(tweets)
+        tweetlen = len(tweets)
             #print(f"Input string is  {tweetstr}.")
         
-            # I have restricted the input sequence length to 256
-            tokens  = self.R_tokenizer.batch_encode_plus([tweetstr],
-                                            return_tensors='pt', max_length=256,
-                                            truncation=True, padding='max_length'
-                                            )
-            #print(f'token type {type(tokens)}')
+        # I have restricted the input sequence length to 256
+        tokens  = self.R_tokenizer.batch_encode_plus([tweetstr],
+                                        return_tensors='pt', max_length=256,
+                                        truncation=True, padding='max_length'
+                                        )
+        print(f'token type {type(tokens)}')
 
-            #print(tokens['input_ids'])
-            input_ids = np.array(tokens['input_ids'], dtype=np.int32)
-            input_ids = input_ids.reshape(1, 256)
-            input0 = tritonhttpclient.InferInput(self.input_name[0], (1, 256), 'INT32')
-            input0.set_data_from_numpy(input_ids, binary_data=False)
+        #print(tokens['input_ids'])
+        input_ids = np.array(tokens['input_ids'], dtype=np.int32)
+        input_ids = input_ids.reshape(tweetlen, 256)
+        input0 = tritonhttpclient.InferInput(self.input_name[0], (tweetlen, 256), 'INT32')
+        input0.set_data_from_numpy(input_ids, binary_data=False)
 
-            #print(tokens['attention_mask'])
-            attn_ids = np.array(tokens['attention_mask'], dtype=np.int32)
-            attn_ids = attn_ids.reshape(1, 256)
-            input1 = tritonhttpclient.InferInput(self.input_name[1], (1,  256), 'INT32')
-            input1.set_data_from_numpy(attn_ids, binary_data=False)
+        #print(tokens['attention_mask'])
+        attn_ids = np.array(tokens['attention_mask'], dtype=np.int32)
+        attn_ids = attn_ids.reshape(tweetlen, 256)
+        input1 = tritonhttpclient.InferInput(self.input_name[1], (tweetlen,  256), 'INT32')
+        input1.set_data_from_numpy(attn_ids, binary_data=False)
 
-            output = tritonhttpclient.InferRequestedOutput(self.output_name,  binary_data=False)
-            response = self.triton_client.infer(self.model_name, model_version=self.model_version, inputs=[input0, input1], outputs=[output])
-            logits = response.as_numpy('output__0')
-            logitsa = np.asarray(logits, dtype=np.float32)
+        output = tritonhttpclient.InferRequestedOutput(self.output_name,  binary_data=False)
+        response = self.triton_client.infer(self.model_name, model_version=self.model_version, inputs=[input0, input1], outputs=[output])
+        logits = response.as_numpy('output__0')
+        logitsa = np.asarray(logits, dtype=np.float32)
 
-            logits = logitsa[0]
+        for i in range(len(tweets)):
+            logits = logitsa[i]
             #print(f'logits values {logits}')
             probs = softmax(logits)
             #print(f'softmax values {probs}')
@@ -81,6 +83,49 @@ class TritonBitcoinSentiment():
         df = pandas.DataFrame(sentiment_list, columns = ['Tweets','Sentiment','Score'])
         #print(df)
         return df
+
+        #df = pandas.DataFrame(columns=['Tweets','Sentiment','Score'])
+        # sentiment_list = []
+        # for i in range(len(tweets)):
+        #     tweetstr = tweets[i]
+        #     #print(f"Input string is  {tweetstr}.")
+        
+        #     # I have restricted the input sequence length to 256
+        #     tokens  = self.R_tokenizer.batch_encode_plus([tweetstr],
+        #                                     return_tensors='pt', max_length=256,
+        #                                     truncation=True, padding='max_length'
+        #                                     )
+        #     #print(f'token type {type(tokens)}')
+
+        #     #print(tokens['input_ids'])
+        #     input_ids = np.array(tokens['input_ids'], dtype=np.int32)
+        #     input_ids = input_ids.reshape(1, 256)
+        #     input0 = tritonhttpclient.InferInput(self.input_name[0], (1, 256), 'INT32')
+        #     input0.set_data_from_numpy(input_ids, binary_data=False)
+
+        #     #print(tokens['attention_mask'])
+        #     attn_ids = np.array(tokens['attention_mask'], dtype=np.int32)
+        #     attn_ids = attn_ids.reshape(1, 256)
+        #     input1 = tritonhttpclient.InferInput(self.input_name[1], (1,  256), 'INT32')
+        #     input1.set_data_from_numpy(attn_ids, binary_data=False)
+
+        #     output = tritonhttpclient.InferRequestedOutput(self.output_name,  binary_data=False)
+        #     response = self.triton_client.infer(self.model_name, model_version=self.model_version, inputs=[input0, input1], outputs=[output])
+        #     logits = response.as_numpy('output__0')
+        #     logitsa = np.asarray(logits, dtype=np.float32)
+
+        #     logits = logitsa[0]
+        #     #print(f'logits values {logits}')
+        #     probs = softmax(logits)
+        #     #print(f'softmax values {probs}')
+        #     maxindex = int(np.argmax(probs))
+        #     emotion = emotion_dict[maxindex]
+        #     #print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
+        #     sentiment_list.append([tweetstr,  emotion,  probs[maxindex]])
+        #     #df = df.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[maxindex]}, ignore_index=True)
+        # df = pandas.DataFrame(sentiment_list, columns = ['Tweets','Sentiment','Score'])
+        # #print(df)
+        # return df
 
 
 
