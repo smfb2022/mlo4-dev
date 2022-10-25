@@ -31,12 +31,12 @@ class TritonBitcoinSentiment():
 
         self.triton_client = tritonhttpclient.InferenceServerClient(
             url=url, verbose=VERBOSE)
-        # model_metadata = self.triton_client.get_model_metadata(
-        #     model_name=model_name, model_version=model_version)
-        # #print(f"model metadata {model_metadata}")
-        # model_config = self.triton_client.get_model_config(
-        #     model_name=model_name, model_version=model_version)
-        # #print(f"model_config {model_config}")
+        model_metadata = self.triton_client.get_model_metadata(
+            model_name=model_name, model_version=model_version)
+        #print(f"model metadata {model_metadata}")
+        model_config = self.triton_client.get_model_config(
+            model_name=model_name, model_version=model_version)
+        #print(f"model_config {model_config}")
 
     def run_inference(self, tweets):
 
@@ -44,10 +44,10 @@ class TritonBitcoinSentiment():
 
         tweetstr = list(tweets)
         tweetlen = len(tweets)
-            #print(f"Input string is  {tweetstr}.")
+        print(f"Input string is  {tweetstr}.")
         
         # I have restricted the input sequence length to 256
-        tokens  = self.R_tokenizer.batch_encode_plus([tweetstr],
+        tokens  = self.R_tokenizer.batch_encode_plus(tweetstr,
                                         return_tensors='pt', max_length=256,
                                         truncation=True, padding='max_length'
                                         )
