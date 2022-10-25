@@ -2,4 +2,4 @@ base_folder: '.'
 v2_query:  '(Bitcoin OR #Bitcoin OR #BTC OR #btc) lang:en -is:retweet'
 env_config_path: '.'
 model_name: 'ElKulako/cryptobert'
-inference: 'triton' #hugging-face
+inference: 'hugging-face' #'triton' 
