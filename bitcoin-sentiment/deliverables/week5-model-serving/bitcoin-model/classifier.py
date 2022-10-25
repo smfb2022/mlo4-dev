@@ -31,16 +31,23 @@ class TritonBitcoinSentiment():
 
         self.triton_client = tritonhttpclient.InferenceServerClient(
             url=url, verbose=VERBOSE)
-        model_metadata = self.triton_client.get_model_metadata(
-            model_name=model_name, model_version=model_version)
-        #print(f"model metadata {model_metadata}")
-        model_config = self.triton_client.get_model_config(
-            model_name=model_name, model_version=model_version)
+        # model_metadata = self.triton_client.get_model_metadata(
+        #     model_name=model_name, model_version=model_version)
+        # #print(f"model metadata {model_metadata}")
+        # model_config = self.triton_client.get_model_config(
+        #     model_name=model_name, model_version=model_version)
         #print(f"model_config {model_config}")
 
     def run_inference(self, tweets):
 
         sentiment_list = []
+
+        model_metadata = self.triton_client.get_model_metadata(
+            model_name=self.model_name, model_version=self.model_version)
+        print(f"model metadata {self.model_metadata}")
+        model_config = self.triton_client.get_model_config(
+            model_name=self.model_name, model_version=self.model_version)
+        print(f"model cofig {self.model_config}")
 
         tweetstr = list(tweets)
         tweetlen = len(tweets)
