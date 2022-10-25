@@ -51,7 +51,7 @@ class TritonBitcoinSentiment():
 
         tweetstr = list(tweets)
         tweetlen = len(tweets)
-        print(f"Input string is  {tweetstr}.")
+        print(f"Input strings are  {tweetstr}.")
         
         # I have restricted the input sequence length to 256
         tokens  = self.R_tokenizer.batch_encode_plus(tweetstr,
@@ -85,7 +85,7 @@ class TritonBitcoinSentiment():
             maxindex = int(np.argmax(probs))
             emotion = emotion_dict[maxindex]
             #print(f'EMOTION is {emotion}  with SCORE {probs[:,maxindex]}for tweet {tweetstr}.')
-            sentiment_list.append([tweetstr,  emotion,  probs[maxindex]])
+            sentiment_list.append([tweets[i],  emotion,  probs[maxindex]])
             #df = df.append({'Tweets': tweetstr, 'Sentiment': emotion, 'Score': probs[maxindex]}, ignore_index=True)
         df = pandas.DataFrame(sentiment_list, columns = ['Tweets','Sentiment','Score'])
         #print(df)
