@@ -44,10 +44,10 @@ class TritonBitcoinSentiment():
 
         model_metadata = self.triton_client.get_model_metadata(
             model_name=self.model_name, model_version=self.model_version)
-        print(f"model metadata {self.model_metadata}")
+        print(f"model metadata {model_metadata}")
         model_config = self.triton_client.get_model_config(
             model_name=self.model_name, model_version=self.model_version)
-        print(f"model cofig {self.model_config}")
+        print(f"model cofig {model_config}")
 
         tweetstr = list(tweets)
         tweetlen = len(tweets)
