@@ -42,23 +42,23 @@ class TritonBitcoinSentiment():
 
         sentiment_list = []
 
-        model_metadata = self.triton_client.get_model_metadata(
-            model_name=self.model_name, model_version=self.model_version)
-        print(f"model metadata {model_metadata}")
-        model_config = self.triton_client.get_model_config(
-            model_name=self.model_name, model_version=self.model_version)
-        print(f"model cofig {model_config}")
+        # model_metadata = self.triton_client.get_model_metadata(
+        #     model_name=self.model_name, model_version=self.model_version)
+        # print(f"model metadata {model_metadata}")
+        # model_config = self.triton_client.get_model_config(
+        #     model_name=self.model_name, model_version=self.model_version)
+        # print(f"model cofig {model_config}")
 
         tweetstr = list(tweets)
         tweetlen = len(tweets)
-        print(f"Input strings are  {tweetstr}.")
+        #print(f"Input strings are  {tweetstr}.")
         
         # I have restricted the input sequence length to 256
         tokens  = self.R_tokenizer.batch_encode_plus(tweetstr,
                                         return_tensors='pt', max_length=256,
                                         truncation=True, padding='max_length'
                                         )
-        print(f'token type {type(tokens)}')
+        #print(f'token type {type(tokens)}')
 
         #print(tokens['input_ids'])
         input_ids = np.array(tokens['input_ids'], dtype=np.int32)
